@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div >
       <main>
-        <TestComponent />
+        <TestComponent mensagem="👌😁👌" />
         <ArrowFunction />
       </main>
     </div>
