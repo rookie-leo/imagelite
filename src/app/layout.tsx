@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const roboto = Roboto({ subsets: ["latin"], weight: "900"})
+const roboto = Roboto({ subsets: ["latin"], weight: "900" })
 
 export const metadata: Metadata = {
   title: "ImageLite App",
@@ -16,8 +16,34 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${roboto.className}`}>{children}</body>
+      <body className={`${roboto.className}`}>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
+}
+
+const Header: React.FC = () => {
+  return (
+    <header className="bg-blue-500 text-white py-3">
+      <div className="container mx-auto flex justify-between items-center px-4">
+        <h1 className="text-3xl font-bold">ImageLite</h1>
+      </div>
+    </header>
+  )
+}
+
+const Footer: React.FC = () => {
+  return (
+    <footer className="bg-blue-500 text-white py-4 mt-8">
+      <div className="container mx-auto text-center">
+        Desenvolvido por <a
+          href="https://www.linkedin.com/in/leonardo-silva-paulino-6b3412191/"
+          className="text-white hover:underline"
+          target="_blank">Leonardo Paulino</a>
+      </div>
+    </footer>
+  )
 }
