@@ -1,10 +1,11 @@
-import Image from "next/image";
+import { TestComponent,ArrowFunction } from "../components/TestComponent"
 
 export default function Home() {
   return (
     <div >
       <main>
-        Hello World
+        <TestComponent />
+        <ArrowFunction />
       </main>
     </div>
   );
