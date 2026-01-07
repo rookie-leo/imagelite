@@ -32,7 +32,17 @@ export default function GaleryPage() {
 
     return (
         <Template>
-            <button className="btn btn-primary bg-orange-500" onClick={searchImages}>Teste testando mudanças de estado</button>
+            <section className="flex flex-col items-center justify-center my-5">
+                <div className="flex space-x-4">
+                    <input type="text" className="border px-5 py-2 rounded-lg text-gray-900" />
+                    <select className="border px-4 py-2 rounded-lg text-gray-900" name="" id="">
+                        <option value="">All formats</option>
+                    </select>
+                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg text-gray-900 transition-transform ease-in duration-300 transform hover:shadow-lg hover:translate-y-2" onClick={searchImages}>Buscar</button>
+                    <button className="bg-purple-500 text-white px-4 py-2 rounded-lg text-gray-900 transition-transform ease-in duration-300 transform hover:shadow-lg hover:translate-y-2">Nova imagem</button>
+                </div>
+            </section>
+
             <section className="grid grid-cols-3 gap-8">
                 {renderImageCards()}
             </section>
