@@ -1,40 +1,40 @@
 'use client'
 import { ImageCards, Template } from "@/components"
+import { Image } from "@/resources/image/image.resource"
+import { useImageService } from "@/resources/image/image.service"
 import { useState } from "react"
 
 export default function GaleryPage() {
-    const imageUrl1 = "https://upload.wikimedia.org/wikipedia/pt/e/e3/NarutoUzumakiTresFases.png"
-    const imageUrl2 = "https://criticalhits.com.br/wp-content/uploads/2022/03/sasuke-uchiha.jpg"
-    const name1 = "Naruto Uzumaki Fases"
-    const name2 = "Sasuke Uchiha Fases"
-    
-    const [imageCode, setImageCode] = useState<number>(1)
-    const [urlImage, setUrlImage] = useState<string>(imageUrl1)
-    const [name, setName] = useState<string>(name1)
+    const useService = useImageService()
+    const [images, setImages] = useState<Image[]>([])
 
+    async function searchImages() {
+        const result = await useService.getImage()
+        setImages(result)
+        console.table(result)
+    }
 
-    function handleClick() {
-        console.log("Clicou")
-        if (imageCode == 1) {
-            setImageCode(2)
-            setUrlImage(imageUrl2)
-            setName(name2)
-        } else {
-            setImageCode(1)
-            setUrlImage(imageUrl1)
-            setName(name1)
-        }
+    function renderImageCard(image: Image, index?: number) {
+        return (
+            <ImageCards
+                key={index}
+                name={image.name}
+                src={image.imageUri}
+                tamanho={image.size}
+                dataUpload={image.uploadDate}
+            />
+        )
+    }
+
+    function renderImageCards() {
+        return images.map((image, index) => renderImageCard(image, index))
     }
 
     return (
         <Template>
-            <button className="btn btn-primary bg-orange-500" onClick={handleClick}>Teste testando mudanças de estado</button>
+            <button className="btn btn-primary bg-orange-500" onClick={searchImages}>Teste testando mudanças de estado</button>
             <section className="grid grid-cols-3 gap-8">
-                <ImageCards name={name} src={urlImage} dataUpload="04/01/2024"/>
-                <ImageCards name={name} src={urlImage} dataUpload="04/01/2024"/>
-                <ImageCards name={name} src={urlImage} dataUpload="04/01/2024"/>
-                <ImageCards />
-                <ImageCards />
+                {renderImageCards()}
             </section>
         </Template>
     )
