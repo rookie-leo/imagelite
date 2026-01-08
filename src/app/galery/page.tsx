@@ -9,10 +9,13 @@ export default function GaleryPage() {
     const [images, setImages] = useState<Image[]>([])
     const [query, setQuery] = useState<string>('')
     const [extension, setExtension] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
 
     async function searchImages() {
+        setLoading(true)
         const result = await useService.getImage(query, extension)
         setImages(result)
+        setLoading(false)
     }
 
     function renderImageCard(image: Image) {
@@ -22,6 +25,7 @@ export default function GaleryPage() {
                 name={image.name}
                 src={image.imageUri}
                 tamanho={image.size}
+                extension={image.extension}
                 dataUpload={image.uploadDate}
             />
         )
@@ -32,7 +36,7 @@ export default function GaleryPage() {
     }
 
     return (
-        <Template>
+        <Template loading={loading}>
             <section className="flex flex-col items-center justify-center my-5">
                 <div className="flex space-x-4">
                     <input

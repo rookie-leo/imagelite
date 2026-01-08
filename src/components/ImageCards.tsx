@@ -4,11 +4,12 @@ interface ImageCardsProps {
     name?: string,
     tamanho?: string,
     dataUpload?: string,
-    src?: string
+    src?: string,
+    extension?: string
 }
 
 export const ImageCards: React.FC<ImageCardsProps> = ({
-    name, dataUpload, tamanho, src
+    name, dataUpload, tamanho, src, extension
 }: ImageCardsProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -22,9 +23,10 @@ export const ImageCards: React.FC<ImageCardsProps> = ({
                 <img onClick={() => setIsOpen(true)} src={src} className="h-56 w-full object-cover rounded-t-md " alt="" />
                 <div className="card-body p-4">
                     <h5 className="text-xl font-semibold mb-2 text-gray-600">{name}</h5>
-                    <p className="text-gray-600">{tamanho}</p>
+                    <p className="text-gray-600">{extension}</p>
+                    <p className="text-gray-600">{formatBytes(Number(tamanho))}</p>
                     <p className="text-gray-600">{dataUpload}</p>
-                    <button onClick={download} className="bg-blue-500 hover:bg-blue-900 text-white px-4 py-2 rounded-lg transition-colors duration-300">Download</button>
+                    <button onClick={download} className="bg-blue-500 hover:bg-blue-300 text-white px-4 py-2 rounded-lg transition-colors duration-300">Download</button>
                 </div>
             </div>
 
@@ -46,4 +48,15 @@ export const ImageCards: React.FC<ImageCardsProps> = ({
             }
         </>
     )
+}
+
+function formatBytes(bytes: number, decimals = 2) {
+    if (!+bytes) return '0 Bytes'
+
+    const k = 1024
+    const dm = decimals < 0 ? 0 : decimals
+    const size = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${size[i]}`
 }
