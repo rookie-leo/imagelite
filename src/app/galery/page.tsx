@@ -1,8 +1,9 @@
 'use client'
-import { ImageCards, Template } from "@/components"
+import { Button, ImageCards, Template } from "@/components"
 import { Image } from "@/resources/image/image.resource"
 import { useImageService } from "@/resources/image/image.service"
 import { useState } from "react"
+import Link from "next/link"
 
 export default function GaleryPage() {
     const useService = useImageService()
@@ -51,8 +52,10 @@ export default function GaleryPage() {
                         <option value="PNG">PNG</option>
                         <option value="GIF">GIF</option>
                     </select>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-lg text-gray-900 transition-transform ease-in duration-300 transform hover:shadow-lg hover:translate-y-2" onClick={searchImages}>Buscar</button>
-                    <button className="bg-purple-500 text-white px-4 py-2 rounded-lg text-gray-900 transition-transform ease-in duration-300 transform hover:shadow-lg hover:translate-y-2">Nova imagem</button>
+                    <Button color="blue" label="Buscar" onClick={searchImages}/>
+                    <Link href="/forms">
+                        <Button color="purple" label="Nova imagem"/>
+                    </Link>
                 </div>
             </section>
 
