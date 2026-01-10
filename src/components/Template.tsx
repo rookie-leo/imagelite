@@ -6,15 +6,29 @@ interface TemplateProps {
 export const Template: React.FC<TemplateProps> = ({ children, loading = false }: TemplateProps) => {
     return (
         <>
-            <div className={`${loading? 'animate-pulse' : ''} container mx-auto mt-8 px-4`}>
-                {loading &&
+            <div className={`${loading ? 'animate-pulse' : ''} container mx-auto mt-8 px-4`}>
+                <RenderIf condition={loading}>
                     <div className="text-center">
                         <Loading />
-                    </div>}
+                    </div>
+                </RenderIf>
                 {children}
             </div>
         </>
     )
+}
+
+interface RenderIfProps {
+    condition?: boolean,
+    children: React.ReactNode;
+}
+
+export const RenderIf: React.FC<RenderIfProps> = ({ condition = true, children }) => {
+    if (condition) {
+        return children
+    }
+
+    return false
 }
 
 const Loading: React.FC = () => {
