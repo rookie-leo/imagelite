@@ -1,7 +1,8 @@
 interface InputTextProps {
     style?: string,
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
-    placeholder?: string
+    placeholder?: string,
+    id?: string
 }
 
 export const InputText: React.FC<InputTextProps> = ({ style, ...rest }: InputTextProps) => {

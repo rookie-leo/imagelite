@@ -1,14 +1,16 @@
 interface ButtonProps {
     color?: TailwindColors,
     label?: string
-    onClick?: (event: any) => void
+    onClick?: (event: any) => void,
+    type?: "submit" | "button" | "reset" | undefined
 }
 
-export const Button: React.FC<ButtonProps> = ({ color = 'blue', label, onClick }) => {
+export const Button: React.FC<ButtonProps> = ({ color = 'blue', label, onClick, type }) => {
     return (
         <>
             <button className={`${colorClasses[color]} text-white px-4 py-2 rounded-lg text-gray-900 transition-transform ease-in duration-300 transform hover:shadow-lg hover:translate-y-2`}
-                onClick={onClick}
+                    onClick={onClick}
+                    type={type}
             >
                 {label}
             </button>
