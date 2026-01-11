@@ -1,17 +1,10 @@
 "use client"
 import { InputText, Template, Button, RenderIf, useNotification } from "@/components"
 import { useImageService } from "@/resources/image/image.service"
-import Link from "next/link"
 import { useFormik } from "formik"
-import { use, useState } from "react"
-
-interface FormsProps {
-    name: string,
-    tags: string,
-    file: any
-}
-
-const formScheme: FormsProps = { name: '', tags: '', file: '' }
+import { useState } from "react"
+import { formScheme, FormsProps, formValidation } from "./formeScheme"
+import Link from "next/link"
 
 export default function FormsPage() {
 
@@ -23,7 +16,8 @@ export default function FormsPage() {
 
     const formik = useFormik<FormsProps>({
         initialValues: formScheme,
-        onSubmit: handleSubmit
+        onSubmit: handleSubmit,
+        validationSchema: formValidation,
     })
 
     async function handleSubmit(data: FormsProps) {
@@ -69,6 +63,7 @@ export default function FormsPage() {
                                    value={formik.values.name}
                                    onChange={formik.handleChange}
                                    placeholder="digite o nome da imagem" />
+                                   <span className="text-red-500">{ formik.errors.name }</span>
                     </div>
 
                     <div className="mt-5 grid grid-cols-1">
@@ -77,6 +72,7 @@ export default function FormsPage() {
                                    value={formik.values.tags}
                                    onChange={formik.handleChange}
                                    placeholder="digite o nome das tags separados por virgula" />
+                                   <span className="text-red-500">{ formik.errors.tags }</span>
                     </div>
 
                     <div className="mt-5 grid grid-cols-1">
