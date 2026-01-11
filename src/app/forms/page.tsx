@@ -1,9 +1,9 @@
 "use client"
-import { InputText, Template, Button, RenderIf } from "@/components"
+import { InputText, Template, Button, RenderIf, useNotification } from "@/components"
 import { useImageService } from "@/resources/image/image.service"
 import Link from "next/link"
 import { useFormik } from "formik"
-import { useState } from "react"
+import { use, useState } from "react"
 
 interface FormsProps {
     name: string,
@@ -15,8 +15,11 @@ const formScheme: FormsProps = { name: '', tags: '', file: '' }
 
 export default function FormsPage() {
 
+    const [loading, setLoading] = useState<boolean>(false)
     const [imagePreview, setImagePreview] = useState<string>()
+
     const service = useImageService()
+    const notification = useNotification()
 
     const formik = useFormik<FormsProps>({
         initialValues: formScheme,
@@ -24,20 +27,28 @@ export default function FormsPage() {
     })
 
     async function handleSubmit(data: FormsProps) {
-        const formData = new FormData()
+        setLoading(true)
+        
+        try {
+            const formData = new FormData()
+            formData.append("name", data.name)
+            formData.append("tags", data.tags)
+            formData.append("file", data.file)
 
-        formData.append("name", data.name)
-        formData.append("tags", data.tags)
-        formData.append("file", data.file)
-
-        await service.saveImage(formData)
-
-        formik.resetForm()
-        setImagePreview('')
+            await service.saveImage(formData)
+            notification.notify("Imagem salva com sucesso", "success")
+        } catch (error) {
+            console.error(error)
+            notification.notify("Erro ao salvar imagem", "error")
+        } finally {
+            formik.resetForm()
+            setImagePreview('')
+            setLoading(false)
+        }
     }
 
     function onFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
-        if(event.target.files) {
+        if (event.target.files) {
             const file = event.target.files[0]
             const imageUrl = URL.createObjectURL(file)
 
@@ -48,22 +59,24 @@ export default function FormsPage() {
 
 
     return (
-        <Template>
+        <Template loading={loading}>
             <section className="flex flex-col items-center justify-center my-5">
                 <h5 className="mt-3 mb-10 text-3xl font-extrabold tracking-tight text-slate-900">Nova Imagem</h5>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="grid grid-cols-1">
                         <label className="block text-sm font-medium leading-6 text-gray-600">Nome: *</label>
                         <InputText id="name"
-                            onChange={formik.handleChange}
-                            placeholder="digite o nome da imagem" />
+                                   value={formik.values.name}
+                                   onChange={formik.handleChange}
+                                   placeholder="digite o nome da imagem" />
                     </div>
 
                     <div className="mt-5 grid grid-cols-1">
                         <label className="block text-sm font-medium leading-6 text-gray-600">Tags: *</label>
                         <InputText id="tags"
-                            onChange={formik.handleChange}
-                            placeholder="digite o nome das tags separados por virgula" />
+                                   value={formik.values.tags}
+                                   onChange={formik.handleChange}
+                                   placeholder="digite o nome das tags separados por virgula" />
                     </div>
 
                     <div className="mt-5 grid grid-cols-1">
@@ -87,10 +100,10 @@ export default function FormsPage() {
                                             <span>Clique para selecionar uma imagem</span>
                                         </RenderIf>
 
-                                    <RenderIf condition={!!imagePreview}>
-                                        <img src={imagePreview} width={250} className="rounded-md" />
-                                    </RenderIf>
-                                        
+                                        <RenderIf condition={!!imagePreview}>
+                                            <img src={imagePreview} width={250} className="rounded-md" />
+                                        </RenderIf>
+
                                         <input onChange={onFileUpload} type="file" className="sr-only" />
                                     </label>
                                 </div>

@@ -14,6 +14,10 @@ class ImageService {
             method: 'POST',
             body: data
         })
+
+        if (!response.ok) {
+            throw new Error("Erro ao salvar imagem")
+        }
         
         return response.headers.get('location') ?? ''
     }

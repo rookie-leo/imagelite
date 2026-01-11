@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import "react-toastify/ReactToastify.css"
 
 const roboto = Roboto({ subsets: ["latin"], weight: "900" })
 
@@ -18,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${roboto.className}`}>
         <Header />
-        {children}
+          {children}
         <Footer />
       </body>
     </html>
